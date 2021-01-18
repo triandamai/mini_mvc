@@ -42,7 +42,12 @@ export class MeetingController {
     ]);
     //validation passed
     if (next) {
-      //fail create meeting
+      //query
+      const data = await model
+        .get(["column1 as b"])
+        .where({ column: "", value: "" })
+        .orwhere({ column: "", value: "" })
+        .run();
 
       return sendJSON200({
         res: res,

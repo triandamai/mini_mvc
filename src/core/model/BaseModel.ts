@@ -19,7 +19,7 @@ import {
   QueryResult,
   connection,
   database,
-  IDatabase
+  IDatabase,
 } from "..";
 import {} from "mysql";
 import * as dotenv from "dotenv";
@@ -37,9 +37,7 @@ abstract class BaseModel implements IDatabase {
   protected query: string = "";
   protected isWriteData: boolean;
 
-  constructor() {
-    database.connect();
-  }
+  constructor() {}
   /**
    * get all data
    * @param tableName
@@ -99,9 +97,9 @@ abstract class BaseModel implements IDatabase {
     this.query += qwhere({
       data: {
         column: data.column,
-        value: typeof data.value == "string" ? `${data.value}` : data.value
+        value: typeof data.value == "string" ? `${data.value}` : data.value,
       },
-      type: WhereType.WHERE
+      type: WhereType.WHERE,
     });
     return this;
   }
@@ -115,9 +113,9 @@ abstract class BaseModel implements IDatabase {
     this.query += qwhere({
       data: {
         column: data.column,
-        value: data.value
+        value: data.value,
       },
-      type: WhereType.ORWHERE
+      type: WhereType.ORWHERE,
     });
     return this;
   }
@@ -131,9 +129,9 @@ abstract class BaseModel implements IDatabase {
     this.query += qwhere({
       data: {
         column: data.column,
-        value: data.value
+        value: data.value,
       },
-      type: WhereType.ANDWHETE
+      type: WhereType.ANDWHETE,
     });
     return this;
   }
@@ -147,7 +145,7 @@ abstract class BaseModel implements IDatabase {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
-      type: JoinType.LEFT
+      type: JoinType.LEFT,
     });
     return this;
   }
@@ -161,7 +159,7 @@ abstract class BaseModel implements IDatabase {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
-      type: JoinType.LEFT
+      type: JoinType.LEFT,
     });
     return this;
   }
@@ -175,7 +173,7 @@ abstract class BaseModel implements IDatabase {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
-      type: JoinType.LEFT
+      type: JoinType.LEFT,
     });
     return this;
   }
@@ -189,7 +187,7 @@ abstract class BaseModel implements IDatabase {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
-      type: JoinType.LEFT
+      type: JoinType.LEFT,
     });
     return this;
   }
@@ -205,6 +203,7 @@ abstract class BaseModel implements IDatabase {
     let payload: QueryResult;
     this.log("executing run");
     return new Promise<QueryResult>((resolve, reject) => {
+      database.connect();
       this.log(`QUERY => ` + this.query);
       connection.query(this.query, (err, results, fields) => {
         this.log("results => " + results + " error => " + err);
@@ -214,7 +213,7 @@ abstract class BaseModel implements IDatabase {
               success: false,
               data: null,
               dataCount: 0,
-              message: err.sqlMessage + "in " + err.sql
+              message: err.sqlMessage + "in " + err.sql,
             })
           );
         } else {
@@ -223,7 +222,7 @@ abstract class BaseModel implements IDatabase {
               success: true,
               data: results,
               dataCount: results.length,
-              message: results
+              message: results,
             })
           );
         }
@@ -273,7 +272,7 @@ abstract class BaseModel implements IDatabase {
             resolve(this.generateId({ length: 6 }));
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.log("Generate id error => " + err);
           resolve(this.generateId({ length: 6 }));
         });
