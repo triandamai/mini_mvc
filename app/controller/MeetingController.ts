@@ -3,16 +3,8 @@
  * Time     13:29
  * Author   Trian Damai
  * */
-import {
-  Post,
-  validateRequest,
-  sendJSON200,
-  sendJSON404,
-  uuid,
-  Get,
-} from "../../core";
-import { Request, Response } from "express";
-import { MeetingModel } from "../model/MeetingModel";
+import { Post, validate, sendJSON200, Request, Response, Get } from "../app";
+import { MeetingModel } from "../model";
 
 export class MeetingController {
   /**
@@ -31,7 +23,7 @@ export class MeetingController {
     const model = new MeetingModel();
 
     //validate request
-    const { next, message } = await validateRequest(req, [
+    const { isValid, invalidMessages } = await validate(req, [
       { field: "userId", type: "string", required: true },
       { field: "username", type: "string", required: true },
       {
@@ -41,7 +33,7 @@ export class MeetingController {
       },
     ]);
     //validation passed
-    if (next) {
+    if (isValid) {
       //query
       const data = await model
         .get(["column1 as b"])
@@ -52,13 +44,13 @@ export class MeetingController {
       return sendJSON200({
         res: res,
         payload: {},
-        message: message,
+        message: invalidMessages,
       });
     } else {
       return sendJSON200({
         res: res,
         payload: {},
-        message: message,
+        message: invalidMessages,
       });
     }
   }

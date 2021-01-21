@@ -4,18 +4,13 @@
  * Author   Trian Damai
  * */
 
-import * as express from "express";
-import { appRouter } from "../core/decorator";
-import * as bodyparser from "body-parser";
+import { app, appRouter, bodyparser, cors, dotenv } from ".";
 
-import * as cors from "cors";
-
-import * as dotenv from "dotenv";
 dotenv.config();
 const port = process.env.PORT || 4000;
 
 class App {
-  app: express.Application = express();
+  app: app.Application = app();
   constructor() {
     const corsOptions: cors.CorsOptions = {
       allowedHeaders: [

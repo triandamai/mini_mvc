@@ -5,8 +5,16 @@
  * */
 import { Router } from "express";
 
+/***
+ * routing
+ * all route decorator will add to here
+ */
 export const appRouter = Router();
 
+/***
+ *
+ *
+ */
 enum method {
   get = "get",
   post = "post",
