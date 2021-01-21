@@ -10,7 +10,7 @@ import {
   sendJSON404,
   uuid,
   Get,
-} from "../core";
+} from "../../core";
 import { Request, Response } from "express";
 import { MeetingModel } from "../model/MeetingModel";
 

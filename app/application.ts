@@ -5,11 +5,10 @@
  * */
 
 import * as express from "express";
-import { appRouter } from "./core/decorator";
+import { appRouter } from "../core/decorator";
 import * as bodyparser from "body-parser";
 
 import * as cors from "cors";
-import { allowedOrigins } from "./origin";
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -36,6 +35,7 @@ class App {
     // this.app.use();
     this.app.use(appRouter);
   }
+  public setHeader() {}
   public run() {
     this.app.listen(port, () => {
       this.log(`running at http://localhost:${port}`);

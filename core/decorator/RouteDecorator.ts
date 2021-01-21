@@ -3,8 +3,7 @@
  * Time     13:29
  * Author   Trian Damai
  * */
-import { Router, Request, Response } from "express";
-import { validateRoute, sendJSON400 } from "..";
+import { Router } from "express";
 
 export const appRouter = Router();
 
@@ -12,7 +11,7 @@ enum method {
   get = "get",
   post = "post",
   put = "put",
-  delete = "delete"
+  delete = "delete",
 }
 interface IOptions {
   path: string;

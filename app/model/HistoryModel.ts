@@ -3,7 +3,7 @@
  * Time     13:29
  * Author   Trian Damai
  * */
-import { Model, BaseModel } from "../core";
+import { Model, BaseModel } from "../../core";
 
 class HistoryModel extends BaseModel {
   tableName = "history";

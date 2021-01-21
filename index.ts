@@ -4,11 +4,11 @@
  * Author   Trian Damai
  * */
 
-import app from "./src/application";
+import app from "./app/application";
 import * as dotenv from "dotenv";
 dotenv.config();
 const port = process.env.PORT || 4000;
 
-import "./src/controller";
+import "./app/controller";
 
 app.run();
