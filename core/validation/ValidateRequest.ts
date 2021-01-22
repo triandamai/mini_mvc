@@ -3,8 +3,7 @@
  * Time     21:31
  * Author   Trian Damai
  * */
-import { Request } from "express";
-import * as dotenv from "dotenv";
+import { Request, dotenv } from "../index";
 dotenv.config();
 /**
  * result validation

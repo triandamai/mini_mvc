@@ -4,11 +4,24 @@
  * Author   Trian Damai
  * */
 
-import app from "./app/application";
-import * as dotenv from "dotenv";
-dotenv.config();
-const port = process.env.PORT || 4000;
-
+import { Application } from "./core";
+/***
+ * ==============CONTROLLER======================
+ *
+ * import all controller in here
+ *
+ *===============================================
+ */
 import "./app/controller";
+//import "./app/controller/MeetingController"
 
+/***
+ * prepare app befor running
+ *
+ */
+let app = new Application();
+/***
+ * running app with port from env or default 4000
+ *
+ */
 app.run();

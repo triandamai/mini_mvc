@@ -9,7 +9,7 @@ import { app, appRouter, bodyparser, cors, dotenv } from ".";
 dotenv.config();
 const port = process.env.PORT || 4000;
 
-class App {
+class Application {
   app: app.Application = app();
   constructor() {
     const corsOptions: cors.CorsOptions = {
@@ -49,5 +49,4 @@ class App {
     }
   }
 }
-
-export default new App();
+export default Application;

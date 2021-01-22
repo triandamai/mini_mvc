@@ -4,8 +4,7 @@
  * Author   Trian Damai
  * */
 import { createConnection, Connection } from "mysql";
-
-import * as dotenv from "dotenv";
+import { dotenv } from "..";
 dotenv.config();
 
 interface IDatabase {
@@ -23,15 +22,15 @@ class Database {
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       database: process.env.DB_NAME,
-      password: process.env.DB_PASSWORD
+      password: process.env.DB_PASSWORD,
     });
-    this.db.on("connect", err => {
+    this.db.on("connect", (err) => {
       this.Idb.log(err);
     });
-    this.db.on("error", err => {
+    this.db.on("error", (err) => {
       this.Idb.log(err);
     });
-    this.db.on("enqueue", err => {
+    this.db.on("enqueue", (err) => {
       this.Idb.log(err);
     });
   }
@@ -43,7 +42,7 @@ class Database {
 const database = new Database({
   log(msg) {
     //   console.log("Database ", msg);
-  }
+  },
 });
 
 const connection = database.getConnection();

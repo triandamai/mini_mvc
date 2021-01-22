@@ -13,5 +13,6 @@ import * as app from "express";
 import * as bodyparser from "body-parser";
 import * as cors from "cors";
 import * as dotenv from "dotenv";
-export { bodyparser, app, cors, dotenv };
+import Application from "../application";
+export { bodyparser, app, cors, dotenv, Application };
 export { Request, Response } from "express";

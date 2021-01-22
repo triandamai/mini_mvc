@@ -20,9 +20,8 @@ import {
   connection,
   database,
   IDatabase,
+  dotenv,
 } from "..";
-import {} from "mysql";
-import * as dotenv from "dotenv";
 dotenv.config();
 
 /**
