@@ -4,24 +4,11 @@
  * Author   Trian Damai
  * */
 
-import { Application } from "./core";
-/***
- * ==============CONTROLLER======================
- *
- * import all controller in here
- *
- *===============================================
- */
-import "./app/controller";
-//import "./app/controller/MeetingController"
+import { Application } from "./core/application";
 
-/***
- * prepare app befor running
- *
- */
+import "./core/paths"
+import "./app/controller/MeetingController"
+
+
 let app = new Application();
-/***
- * running app with port from env or default 4000
- *
- */
 app.run();

@@ -1,1 +1,2 @@
-export * from "./bootsrap"
+import * as dotenv from "dotenv"
+dotenv.config();

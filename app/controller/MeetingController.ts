@@ -3,8 +3,10 @@
  * Time     13:29
  * Author   Trian Damai
  * */
-import { Post, validate, sendJSON200, Request, Response, Get } from "../app";
-import { MeetingModel } from "../model";
+import { Post, Get } from "@mvc-route";
+import { MeetingModel } from "../model/MeetingModel";
+import { Request, Response } from "@mvc-type";
+import { validate } from "@mvc-validation";
 
 export class MeetingController {
   /**
@@ -18,7 +20,7 @@ export class MeetingController {
     path: "/create",
     middlewares: null,
   })
-  public async create(req: Request, res: Response) {
+  public async create(req: Request, res: any) {
     //init class
     const model = new MeetingModel();
 
@@ -34,6 +36,16 @@ export class MeetingController {
     ]);
     //validation passed
     if (isValid) {
+
+      res
+        .json({
+          res: res,
+          payload: {},
+          message: invalidMessages,
+        })
+        .end();
+    
+    }
       //query
       const data = await model
         .get(["column1 as b"])
@@ -41,24 +53,28 @@ export class MeetingController {
         .orwhere({ column: "", value: "" })
         .run();
 
-      return sendJSON200({
+      res
+        .json({
+          res: res,
+          payload: data,
+          message: invalidMessages,
+        })
+        .end();
+    } 
+  
+
+  @Get({ path: "/tes" })
+  public testIOT(req: Request, res: any) {
+    res
+      .json({
         res: res,
-        payload: {},
-        message: invalidMessages,
-      });
-    } else {
-      return sendJSON200({
-        res: res,
-        payload: {},
-        message: invalidMessages,
-      });
-    }
+        payload: "",
+        message: "",
+      })
   }
 
-  @Post({ path: "/end", middlewares: null })
-  public end(req: Request, res: Response) {}
-  @Get({ path: "/tes" })
-  public testIOT(req: Request, res: Response) {
-    sendJSON200({ message: "hai", payload: req.body, res: res });
+  @Get({path:"/"})
+  public mueheheh(req:Request,res:any){
+    res.json({sas:req.params})
   }
 }

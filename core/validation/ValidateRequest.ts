@@ -3,13 +3,12 @@
  * Time     21:31
  * Author   Trian Damai
  * */
-import { Request, dotenv } from "../index";
-dotenv.config();
+
 /**
  * result validation
  * */
 
-interface validationResult {
+interface ValidationResult {
   isValid: boolean;
   invalidMessages?: Array<string>;
 }
@@ -23,7 +22,7 @@ type TypeData = "string" | "number" | "boolean";
  * paramater for validation
  *
  */
-interface validationField {
+interface ValidationField {
   field: any;
   type?: TypeData;
   required?: boolean;
@@ -55,22 +54,28 @@ const getExpectedmessage = (expected: any, type: any, got: any) => {
  * @returns validationRresult
  */
 async function validate(
-  req: Request,
-  data: Array<validationField>
-): Promise<validationResult> {
+  req: any,
+  data: Array<ValidationField>
+): Promise<ValidationResult> {
   //get method
-  let request =
-    req.method == "POST"
-      ? req.body
-      : req.method == "GET"
-      ? req.query
-      : req.params;
+
+  const getPayload =()=>{
+    if(req.method == "POST"){
+      return req.body
+    }
+    if(req.method == "GET"){
+      return req.query
+    }
+
+    return req.params
+  }
   //message while validation not valid
   let messages: Array<string> = [];
+  let request = getPayload()
 
   //check request
   if (typeof request != "undefined") {
-    data.map((item) => {
+    data.forEach((item) => {
       const data: any = request[item.field] ? request[item.field] : null;
       if (item.required) {
         if (data) {
@@ -104,10 +109,14 @@ async function validate(
       }
     });
   } else {
+    let message = ()=>{
+      if(process.env.LANG == "ID"){
+        return "diperlukan ,yang didapat"
+      }
+      return "required but got"
+    }
     messages.push(
-      `${data} ${(process.env.LANG = "ID"
-        ? "diperlukan ,yang didapat"
-        : "required but got")}  ${request}`
+      `${data} ${message()} ${request}`
     );
   }
 
@@ -115,7 +124,7 @@ async function validate(
   if (messages.length > 0) {
     return { isValid: false, invalidMessages: messages };
   } else {
-    return { isValid: true, invalidMessages: null };
+    return { isValid: true, invalidMessages: undefined };
   }
 }
 

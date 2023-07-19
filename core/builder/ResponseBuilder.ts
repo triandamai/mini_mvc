@@ -3,7 +3,7 @@
  * Time     13:29
  * Author   Trian Damai
  * */
-import { response, Response } from "express";
+import { Response } from "express";
 interface data {
   res: Response;
   payload?: any;

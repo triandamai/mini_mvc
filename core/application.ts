@@ -4,13 +4,14 @@
  * Author   Trian Damai
  * */
 
-import { app, appRouter, bodyparser, cors, dotenv } from ".";
+import { appRouter, } from "../core/decorator/RouteDecorator";
+import * as cors from "cors"
+import * as app from "express"
 
-dotenv.config();
 const port = process.env.PORT || 4000;
 
-class Application {
-  app: app.Application = app();
+export class Application {
+  app:any  = app();
   constructor() {
     const corsOptions: cors.CorsOptions = {
       allowedHeaders: [
@@ -25,12 +26,10 @@ class Application {
       origin: "http://localhost:8080",
     };
     this.app.use(cors(corsOptions));
-    this.app.use(bodyparser.json({ limit: "50mb" }));
-    this.app.use(bodyparser.urlencoded({ extended: true, limit: "50mb" }));
-    // this.app.use();
+    this.app.use(app.json({ limit: "50mb" }));
+    this.app.use(app.urlencoded({ extended: true, limit: "50mb" }));
     this.app.use(appRouter);
   }
-  public setHeader() {}
   public run() {
     this.app.listen(port, () => {
       this.log(`running at http://localhost:${port}`);
@@ -49,4 +48,3 @@ class Application {
     }
   }
 }
-export default Application;

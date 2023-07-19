@@ -10,6 +10,15 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "baseUrl": ".",
+		"paths": {
+         "@mvc-route":["./core/decorator/RouteDecorator"],
+         "@mvc-validation":["./core/validation/ValidateRequest"],
+         "@mvc-type":["./core/type/type"],
+         "@mvc-model":["./core/model/BaseModel"],
+         "@mvc-app":["./core/application"]
+		},
+      "typeRoots": ["./node_modules/@types","./core/route.d.ts"]
    }
 }

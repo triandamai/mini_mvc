@@ -4,9 +4,6 @@
  * Author   Trian Damai
  * */
 import { createConnection, Connection } from "mysql";
-import { dotenv } from "..";
-dotenv.config();
-
 interface IDatabase {
   log(msg: any): void;
 }

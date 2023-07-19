@@ -3,10 +3,8 @@
  * Time     13:29
  * Author   Trian Damai
  * */
-import { Model, BaseModel } from "../../core";
+import { BaseModel } from "@mvc-model";
 
-class MeetingModel extends BaseModel {
+export class MeetingModel extends BaseModel {
   tableName = "meeting";
 }
-
-export { MeetingModel };

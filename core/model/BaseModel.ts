@@ -5,7 +5,6 @@
  * */
 
 import {
-  ResultBuilder,
   ResultType,
   Where,
   WhereType,
@@ -17,12 +16,9 @@ import {
   qjoin,
   qwhere,
   QueryResult,
-  connection,
-  database,
-  IDatabase,
-  dotenv,
-} from "..";
-dotenv.config();
+ 
+} from "../builder/QueryBuilder";
+import { database,IDatabase,connection} from "../database/Database"
 
 /**
  * class base models
@@ -32,17 +28,17 @@ dotenv.config();
  * @returns model with querybuilder for extends
  * */
 abstract class BaseModel implements IDatabase {
-  public abstract tableName: string = "";
+  public abstract tableName: string;
   protected query: string = "";
   protected isWriteData: boolean;
 
-  constructor() {}
+  constructor() { /* TODO document why this constructor is empty */ }
   /**
    * get all data
    * @param tableName
    * @returns results of all data from database
    * */
-  public getAll(): BaseModel {
+  public getAll(): this {
     this.isWriteData = false;
     this.query += qgetall({ tableName: this.tableName });
     return this;
@@ -55,7 +51,7 @@ abstract class BaseModel implements IDatabase {
    * ex:
    *
    * */
-  public get(data: Array<string>): BaseModel {
+  public get(data: Array<string>): this {
     this.isWriteData = false;
     this.query += qget({ tableName: this.tableName, data: data });
     return this;
@@ -68,7 +64,7 @@ abstract class BaseModel implements IDatabase {
    * ex:
    *
    * */
-  public insert(data: any): BaseModel {
+  public insert(data: any): this {
     this.isWriteData = true;
     this.query += qinsert({ table: this.tableName, data: data });
     return this;
@@ -81,7 +77,7 @@ abstract class BaseModel implements IDatabase {
    * ex:
    *
    * */
-  public update(data: any): BaseModel {
+  public update(data: any): this {
     this.isWriteData = true;
     this.query += qupdate({ table: this.tableName, data: data });
     return this;
@@ -92,7 +88,7 @@ abstract class BaseModel implements IDatabase {
    * @param value
    * @returns WHERE column = value
    * */
-  public where(data: { column: string; value: any }): BaseModel {
+  public where(data: { column: string; value: any }): this {
     this.query += qwhere({
       data: {
         column: data.column,
@@ -108,7 +104,7 @@ abstract class BaseModel implements IDatabase {
    * @param value
    * @returns OR WHERE column = value
    * */
-  public orwhere(data: Where): BaseModel {
+  public orwhere(data: Where): this {
     this.query += qwhere({
       data: {
         column: data.column,
@@ -124,7 +120,7 @@ abstract class BaseModel implements IDatabase {
    * @param value
    * @returns AND WHERE column = value
    * */
-  public andwhere(data: Where): BaseModel {
+  public andwhere(data: Where): this {
     this.query += qwhere({
       data: {
         column: data.column,
@@ -140,7 +136,7 @@ abstract class BaseModel implements IDatabase {
    * @param on
    * @returns JOIN table ON table.fk
    * */
-  public join(join: { withTable: string; on: string }): BaseModel {
+  public join(join: { withTable: string; on: string }): this {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
@@ -154,7 +150,7 @@ abstract class BaseModel implements IDatabase {
    * @param on
    * @returns LEFT JOIN table ON table.fk
    * */
-  public leftJoin(join: { withTable: string; on: string }): BaseModel {
+  public leftJoin(join: { withTable: string; on: string }): this {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
@@ -168,7 +164,7 @@ abstract class BaseModel implements IDatabase {
    * @param on
    * @returns RIGHT JOIN table ON table.fk
    * */
-  public rightJoin(join: { withTable: string; on: string }): BaseModel {
+  public rightJoin(join: { withTable: string; on: string }): this {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
@@ -182,7 +178,7 @@ abstract class BaseModel implements IDatabase {
    * @param on
    * @returns  FULL OUTER JOIN table ON table.fk
    * */
-  public fullJoin(join: { withTable: string; on: string }): BaseModel {
+  public fullJoin(join: { withTable: string; on: string }): this {
     this.query += qjoin({
       table: join.withTable,
       on: join.on,
@@ -236,12 +232,11 @@ abstract class BaseModel implements IDatabase {
    * @param length
    * @returns randomuid
    */
-  public generateId(data: { length: number }) {
-    var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < data.length; i++) {
+  public generateId(length:number) {
+    let result = "";
+    let characters ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     this.log(`Generate Id => ${result}`);
@@ -255,7 +250,7 @@ abstract class BaseModel implements IDatabase {
    * */
   public async availableId() {
     return new Promise((resolve, reject) => {
-      let data = this.generateId({ length: 6 });
+      let data = this.generateId( 6 );
       this.getAll()
         .where({ column: "externalId", value: data })
         .run()
@@ -263,17 +258,17 @@ abstract class BaseModel implements IDatabase {
           this.log("Generate id  => " + res);
           if (res.result == ResultType.SUCCESS) {
             if (res.result.payload.length > 0) {
-              resolve(this.generateId({ length: 6 }));
+              resolve(this.generateId( 6 ));
             } else {
               resolve(data);
             }
           } else {
-            resolve(this.generateId({ length: 6 }));
+            resolve(this.generateId(6 ));
           }
         })
         .catch((err) => {
           this.log("Generate id error => " + err);
-          resolve(this.generateId({ length: 6 }));
+          resolve(this.generateId( 6 ));
         });
     });
   }
